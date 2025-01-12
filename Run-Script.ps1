@@ -19,6 +19,7 @@ $textApiUrl = "https://baconipsum.com/api/?type=meat-and-filler&sentences=1"
 $generatorJob = Start-Job -ScriptBlock {
     param ($syncHash, $url)
     for ($i = 1; $i -le 10; $i++) {
+        Write-Host "loopdieloop"
         # Fetch text from the HTTP API
         try {
             $response = Invoke-RestMethod -Uri $url -Method Get
@@ -46,6 +47,7 @@ $appenderJob = Start-Job -ScriptBlock {
     "ID,Text" | Out-File -FilePath $outputCsv -Encoding UTF8
 
     while (-not $syncHash.Stop -or $syncHash.Queue.Count -gt 0) {
+        Write-Host "loop"
         if ($syncHash.Queue.Count -gt 0) {
             # Take the first item from the queue
             $item = $syncHash.Queue[0]
